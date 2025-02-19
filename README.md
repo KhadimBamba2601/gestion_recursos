@@ -28,7 +28,7 @@ Este proyecto es un sistema web para la gestión y monitoreo de recursos del sis
 1.  Clona este repositorio:
 
     ```bash
-    git clone [https://github.com/tu_usuario/nombre_del_repositorio.git](https://www.google.com/search?q=https://github.com/tu_usuario/nombre_del_repositorio.git)
+    git clone git@github.com:KhadimBamba2601/gestion_recursos.git
     ```
 
 2.  Crea un entorno virtual (recomendado):
