@@ -69,15 +69,36 @@ Este proyecto es un sistema web para la gestión y monitoreo de recursos del sis
 ## Estructura del proyecto
 
 .
-├── app.py          # Archivo principal de la aplicación Flask
-├── views.py        # Archivo con las rutas y la lógica de las vistas
-├── models.py       # Archivo con la definición de los modelos de la base de datos
-├── config.py       # Archivo de configuración
-├── templates/      # Carpeta con los templates HTML
-│   ├── base.html
-│   ├── ...
+├── app.py          # Archivo principal de la aplicación Flask<br>
+├── views.py        # Archivo con las rutas y la lógica de las vistas<br>
+├── models.py       # Archivo con la definición de los modelos de la base de datos<br>
+├── config.py       # Archivo de configuración<br>
+├── create_admin.py #Archivo para crear usuarios de administrador<br>
+├── forms.py
+├── management.py
+├── templates/      # Carpeta con los templates HTML<br>
+│   ├── base.html<br>
+│   ├── crear-log.html<br>
+│   ├── crear-tarea<br>
+│   ├── crear-usuario<br>
+│   ├── dashboard.html<br>
+│   ├── detalle-procesos.html<br>
+│   ├── detalle-reportes.html<br>
+│   ├── editar-tarea.html<br>
+│   ├── editar-usuario.html<br>
+│   ├── enviar-correo.html<br>
+│   ├── generar_reporte.html<br>
+│   ├── index.html<br>
+│   ├── lista-log.html<br>
+│   ├── lista-procesos.html<br>
+│   ├── lista-tarea.html<br>
+│   ├── lista-usuario.html<br>
+│   ├── login.html<br>
+│   └── registro.html<br>
 ├── static/         # Carpeta con archivos estáticos (CSS, JavaScript)
-│   ├── css/
-│   ├── js/
-├── requirements.txt # Archivo con las dependencias del proyecto
+│   ├── css/<br>
+│   └── styles.css<br>
+│   ├── javascript/<br>
+│   └── script.js<br>
+├── requirements.txt # Archivo con las dependencias del proyecto<br>
 └── README.md
