@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Bienvenido, {{ current_user.usuario }}</h1>
+    <div class="row">
+        <div class="col-md-4"><div class="card"><div class="card-body">
+            <h5 class="card-title">Uso de CPU</h5><div id="cpu-chart"><canvas id="cpuChart"></canvas></div>
+            <p class="card-text">{{ cpu_usage }}%</p></div></div></div>
+        <div class="col-md-4"><div class="card"><div class="card-body">
+            <h5 class="card-title">Uso de Memoria</h5><div id="memory-chart"><canvas id="memoryChart"></canvas></div>
+            <p class="card-text">{{ memory_usage }}%</p></div></div></div>
+        <div class="col-md-4"><div class="card"><div class="card-body">
+            <h5 class="card-title">Uso de Almacenamiento</h5><div id="storage-chart"><canvas id="storageChart"></canvas></div>
+            <p class="card-text">{{ storage_usage|round(2) }}%</p></div></div></div>
+    </div>
+    <div class="mt-4"><h2>Tareas Programadas</h2><table>
+        <thead><tr><th>Tarea</th><th>Última Ejecución</th><th>Próxima Ejecución</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>{% for task in tasks %}<tr>
+            <td>{{ task.nombre }}</td><td>{{ task.fecha_ejecucion or "Pendiente" }}</td>
+            <td>{{ task.fecha_ejecucion or "Pendiente" }}</td><td>{{ task.estado }}</td><td>
+                <a href="{{ url_for('tareas.editar_tarea', tarea_id=task.id) }}" class="btn btn-sm btn-primary">Editar</a>
+                <form method="POST" action="{{ url_for('tareas.eliminar_tarea', tarea_id=task.id) }}" style="display: inline;">
+                    {{ form.csrf_token }}<button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form></td></tr>{% endfor %}</tbody>
+    </table>{% if not tasks %}<p>No hay tareas programadas.</p>{% endif %}</div>
+    <div class="mt-4"><h2>Gestión de Logs</h2>
+        <a href="{{ url_for('log.listar_logs') }}" class="btn btn-primary">Ver Logs</a>
+        <a href="{{ url_for('log.crear_log') }}" class="btn btn-success">Crear Log</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <script>
+    function crearGrafico(canvasId, data, label) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        if (ctx) {
+            new Chart(ctx, { /* ... (código del gráfico sin cambios) ... */ });
+        } else {
+            console.error("No se pudo obtener el contexto para el canvas con ID: " + canvasId);
+        }
+    }
+
+    try {
+        const cpuData = JSON.parse("{{ cpu_data|safe }}");
+        const memoryData = JSON.parse("{{ memory_data|safe }}");
+        const storageData = JSON.parse("{{ storage_data|safe }}");
+
+        console.log("Datos de CPU:", cpuData);
+        console.log("Datos de Memoria:", memoryData);
+        console.log("Datos de Almacenamiento:", storageData);
+
+        crearGrafico('cpuChart', cpuData, 'CPU');
+        crearGrafico('memoryChart', memoryData, 'Memoria');
+        crearGrafico('storageChart', storageData, 'Almacenamiento');
+
+    } catch (error) {
+        console.error("Error al procesar los datos:", error); // Mensaje de error más descriptivo
+        console.error("Detalles del error:", error.message);    // Detalles del error
+    }
+</script>
+{% endblock %}

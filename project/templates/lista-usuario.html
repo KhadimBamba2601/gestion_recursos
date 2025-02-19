@@ -1,0 +1,50 @@
+{% extends 'base.html' %}  {# Hereda de base.html #}
+
+{% block title %}Usuarios - Sistema de Gestión de Recursos{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Usuarios</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de usuario</th>
+                <th>Correo electrónico</th>
+                <th>Rol</th>  {# Nueva columna para el rol #}
+                <th>Acciones</th> {# Columna para acciones #}
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.usuario }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.rol }}</td>  {# Muestra el rol #}
+                    <td>
+                        <a href="{{ url_for('editar_usuario', usuario_id=usuario.id) }}" class="btn btn-sm btn-primary">Editar</a>  {# Enlace a editar #}
+                        <a href="{{ url_for('eliminar_usuario', usuario_id=usuario.id) }}" class="btn btn-sm btn-danger">Eliminar</a>  {# Enlace a eliminar #}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('crear_usuario') }}" class="btn btn-success">Crear Nuevo Usuario</a>  {# Botón para crear usuario #}
+</div>
+{% endblock %}

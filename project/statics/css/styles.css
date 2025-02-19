@@ -1,0 +1,267 @@
+/* Variables para colores, tipografía y espaciado */
+:root {
+    --primary-color: #3498db; /* Azul */
+    --secondary-color: #2980b9; /* Azul más oscuro */
+    --text-color: #333;
+    --background-color: #f8f8f8;
+    --container-background: #fff;
+    --border-color: #ddd;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente principal */
+    --secondary-font: 'Roboto', sans-serif; /* Fuente para encabezados (ejemplo) */
+    --spacing-unit: 10px;
+    --border-radius: 5px;
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 960px;
+    margin: calc(2 * var(--spacing-unit)) auto;
+    padding: calc(2 * var(--spacing-unit));
+    background-color: var(--container-background);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    flex: 1;
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 { /* Estilos para todos los encabezados */
+    font-family: var(--secondary-font); /* Fuente secundaria para encabezados */
+    color: var(--primary-color);
+}
+
+h1 {
+    font-size: 2.5rem; /* Tamaño de fuente para h1 */
+    margin-bottom: calc(2 * var(--spacing-unit));
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem; /* Tamaño de fuente para h2 */
+    margin-bottom: calc(1.5 * var(--spacing-unit));
+}
+
+nav {
+    background-color: var(--container-background);
+    padding: var(--spacing-unit) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+nav ul {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    max-width: 700px;
+}
+
+nav li {
+    display: inline;
+    margin: 0 calc(1.5 * var(--spacing-unit));
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    padding: calc(0.8 * var(--spacing-unit)) calc(1.2 * var(--spacing-unit));
+    border-radius: var(--border-radius);
+}
+
+nav a:hover {
+    color: var(--secondary-color);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: calc(2 * var(--spacing-unit));
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+th, td {
+    padding: calc(1.2 * var(--spacing-unit));
+    text-align: left;
+    background-color: var(--container-background);
+    border-bottom: 1px solid var(--border-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+    color: #555;
+    padding: calc(1.5 * var(--spacing-unit));
+}
+
+/* Estilos para el formulario */
+input, textarea {
+    width: calc(100% - 22px);
+    padding: calc(0.8 * var(--spacing-unit));
+    margin-bottom: calc(1.5 * var(--spacing-unit));
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.2);
+}
+
+button {
+    padding: calc(1.2 * var(--spacing-unit)) calc(2.5 * var(--spacing-unit));
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+.error {
+    color: #e74c3c;
+    margin-top: var(--spacing-unit);
+}
+
+/* Estilos para el footer */
+footer {
+    text-align: center;
+    padding: calc(2 * var(--spacing-unit));
+    margin-top: calc(2 * var(--spacing-unit));
+    background-color: #333;
+    color: #eee;
+}
+
+/* Estilos para hacerlo responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-unit);
+    }
+
+    nav ul {
+        text-align: left;
+    }
+
+    nav li {
+        display: block;
+        margin: calc(0.8 * var(--spacing-unit)) 0;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    input, textarea, button {
+        font-size: 14px;
+    }
+}
+
+
+/* Nuevos estilos */
+
+.jumbotron {
+    background-color: #e9ecef; /* Un gris claro para el jumbotron */
+    padding: 4rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: var(--border-radius);
+}
+
+.card {
+    border: none; /* Quita el borde predeterminado de la tarjeta */
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transiciones para la tarjeta */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Eleva la tarjeta ligeramente al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al pasar el ratón */
+}
+
+.card-title {
+    color: var(--primary-color);
+}
+
+.resource-usage {
+    margin-bottom: 1rem;
+}
+
+.progress {
+    height: 1rem; /* Altura de la barra de progreso */
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    background-color: var(--primary-color); /* Color de la barra de progreso */
+}
+
+.progress-bar.bg-success { /* Estilo específico para la barra de progreso de memoria */
+    background-color: #2ecc71; /* Verde para la memoria */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones para el botón */
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.02); /* Escala ligeramente al pasar
+/* Estilos CSS para los mensajes */
+.mensaje {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.mensaje-info {
+    background-color: #e9ecef; /* Gris claro */
+    color: #333;
+}
+
+.mensaje-success {
+    background-color: #d4edda; /* Verde claro */
+    color: #155724;
+}
+
+.mensaje-error {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24;
+}

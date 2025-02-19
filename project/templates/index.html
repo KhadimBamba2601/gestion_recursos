@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <header class="hero">
+        <div class="jumbotron">
+            <h1 class="display-4">Bienvenido al Sistema de Gestión Administrativa</h1>
+            <p class="lead">Optimización de recursos y tareas administrativas en tiempo real.</p>
+            {% if not current_user.is_authenticated %}
+                <p class="mt-4">Por favor, <a href="{{ url_for('login') }}">inicia sesión</a> para acceder al sistema.</p>
+            {% endif %}
+        </div>
+    </header>
+
+    {% if current_user.is_authenticated %}
+    <main>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="resource-monitoring card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title h5">Monitoreo de Recursos del Sistema</h2>
+                        <p class="card-text">Aquí podrás ver el uso actual de recursos como CPU, memoria y almacenamiento.</p>
+                        <div class="resource-usage">
+                            <p>CPU: <span id="cpu-usage" data-resource-type="cpu">{{ cpu_usage }}%</span></p>
+                            <p>Memoria: <span id="memory-usage" data-resource-type="memory">{{ memory_usage }}%</span></p>
+                        </div>
+                        <div class="progress mt-2">  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{ cpu_usage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ cpu_usage }}%"></div>
+                        </div>
+                        <div class="progress mt-2">  <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{ memory_usage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ memory_usage }}%"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="admin-tasks card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title h5">Tareas Administrativas</h2>
+                        <p class="card-text">Gestiona tareas como respaldo de bases de datos, limpieza de logs y más.</p>
+                        <a href="{{ url_for('tasks') }}" class="btn btn-primary">Gestionar Tareas</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="alert-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </main>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}  <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cpuUsageElement = document.getElementById('cpu-usage');
+            const memoryUsageElement = document.getElementById('memory-usage');
+            const cpuProgressBar = document.querySelector('.progress-bar:nth-child(1)');
+            const memoryProgressBar = document.querySelector('.progress-bar:nth-child(2)');
+
+            function updateResourceUsage() {
+                fetch('/api/resources') // Reemplaza con la URL de tu API
+                    .then(response => response.json())
+                    .then(data => {
+                        cpuUsageElement.textContent = `${data.cpu_usage}%`;
+                        memoryUsageElement.textContent = `${data.memory_usage}%`;
+                        cpuProgressBar.style.width = `${data.cpu_usage}%`;
+                        cpuProgressBar.setAttribute('aria-valuenow', data.cpu_usage);
+                        memoryProgressBar.style.width = `${data.memory_usage}%`;
+                        memoryProgressBar.setAttribute('aria-valuenow', data.memory_usage);
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener datos:', error);
+                        // Manejar el error, por ejemplo, mostrando un mensaje al usuario
+                        cpuUsageElement.textContent = "Error";
+                        memoryUsageElement.textContent = "Error";
+                    });
+            }
+
+            updateResourceUsage(); // Actualizar al cargar la página
+            setInterval(updateResourceUsage, 5000); // Actualizar cada 5 segundos
+        });
+    </script>
+{% endblock %}
