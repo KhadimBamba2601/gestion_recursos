@@ -102,5 +102,6 @@ Este proyecto es un sistema web para la gestión y monitoreo de recursos del sis
 │   │   ├── javascript/<br>
 │   │   └── script.js<br>
 │   ├── requirements.txt # Archivo con las dependencias del proyecto<br>
-│   ├── Informe.pdf<br>
+├── Informe.pdf<br>
+├── base de datos gestion_recursos.sql # Archivo de creacion de base de datos en MySQL<br>
 └── README.md
