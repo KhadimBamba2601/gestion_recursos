@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <header class="hero">
+        <div class="jumbotron">
+            <h1 class="display-4">Bienvenido al Sistema de Gestión Administrativa</h1>
+            <p class="lead">Optimización de recursos y tareas administrativas en tiempo real.</p>
+            {% if not current_user.is_authenticated %}
+                <p class="mt-4">Por favor, <a href="{{ url_for('iniciar_sesion') }}">inicia sesión</a> para acceder al sistema.</p>
+            {% endif %}
+        </div>
+    </header>
+
+    {% if current_user.is_authenticated %}
+    <main>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="resource-monitoring card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title h5">Monitoreo de Recursos del Sistema</h2>
+                        <p class="card-text">Uso actual de recursos:</p>
+                        <div class="resource-usage">
+                            <p>CPU: <span id="cpu-usage">{{ cpu_usage|default(0) }}%</span></p>
+                            <p>Memoria: <span id="memory-usage">{{ memory_usage|default(0) }}%</span></p>
+                            <p>Almacenamiento: <span id="storage-usage">{{ storage_usage|default(0) }}%</span></p>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{ cpu_usage|default(0) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ cpu_usage|default(0) }}%"></div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{ memory_usage|default(0) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ memory_usage|default(0) }}%"></div>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="{{ storage_usage|default(0) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ storage_usage|default(0) }}%"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    {% endif %}
+</div>
+{% endblock %}

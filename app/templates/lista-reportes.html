@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista de Reportes de Recursos</h1>
+    <div class="row mb-3">
+        <div class="col">
+            <form action="{{ url_for('generar_reporte') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">Generar Reporte Manual</button>
+            </form>
+            <a href="{{ url_for('descargar_reportes') }}" class="btn btn-success">Descargar como CSV</a>
+            <a href="{{ url_for('descargar_reportes_pdf') }}" class="btn btn-primary">Descargar como PDF</a>
+        </div>
+        <div class="col">
+            <form method="POST" class="form-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-group">
+                    <input type="date" name="fecha_inicio" class="form-control" placeholder="Fecha Inicio">
+                    <input type="date" name="fecha_fin" class="form-control" placeholder="Fecha Fin">
+                    <button type="submit" class="btn btn-info">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% if reportes.items %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CPU (%)</th>
+                    <th>Memoria (%)</th>
+                    <th>Almacenamiento (%)</th>
+                    <th>Tiempo Respuesta (s)</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reporte in reportes.items %}
+                    <tr>
+                        <td>{{ reporte.id }}</td>
+                        <td>{{ reporte.cpu }}</td>
+                        <td>{{ reporte.memoria_porcentaje }}</td>
+                        <td>{{ reporte.almacenamiento_porcentaje }}</td>
+                        <td>{{ reporte.tiempo_respuesta }}</td>
+                        <td>{{ reporte.fecha }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="Paginación de reportes">
+            <ul class="pagination">
+                {% if reportes.has_prev %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('listar_reportes', page=reportes.prev_num) }}">Anterior</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+                {% for page_num in reportes.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num == reportes.page %}
+                            <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('listar_reportes', page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                {% if reportes.has_next %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('listar_reportes', page=reportes.next_num) }}">Siguiente</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <p>No hay reportes disponibles para el rango seleccionado.</p>
+    {% endif %}
+    <a href="{{ url_for('panel_de_control') }}" class="btn btn-secondary">Volver al Panel de Control</a>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista de Usuarios</h1>
+    <a href="{{ url_for('crear_usuario') }}" class="btn btn-primary mb-3">Crear Nuevo Usuario</a>
+    {% if usuarios %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Fecha de Creación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.nombre_usuario }}</td>
+                        <td>{{ usuario.correo }}</td>
+                        <td>{{ usuario.rol }}</td>
+                        <td>{{ usuario.fecha_creacion }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_usuario', id=usuario.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                            <form action="{{ url_for('eliminar_usuario', id=usuario.id) }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar a {{ usuario.nombre_usuario }}?');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay usuarios registrados.</p>
+    {% endif %}
+    <a href="{{ url_for('panel_de_control') }}" class="btn btn-secondary">Volver al Panel de Control</a>  <!-- Cambiado -->
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Panel de Control</h1>  <!-- Cambiado -->
+    <p>Bienvenido, {{ current_user.nombre_usuario }}!</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title h5">Recursos del Sistema</h2>
+                    <p>CPU: <span id="cpu-usage">{{ recursos.cpu|default(0) }}%</span></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ recursos.cpu|default(0) }}%" aria-valuenow="{{ recursos.cpu|default(0) }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p>Memoria: <span id="memory-usage">{{ recursos.memoria_porcentaje|default(0) }}%</span></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: {{ recursos.memoria_porcentaje|default(0) }}%" aria-valuenow="{{ recursos.memoria_porcentaje|default(0) }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p>Almacenamiento: <span id="storage-usage">{{ recursos.almacenamiento_porcentaje|default(0) }}%</span></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: {{ recursos.almacenamiento_porcentaje|default(0) }}%" aria-valuenow="{{ recursos.almacenamiento_porcentaje|default(0) }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title h5">Tareas Pendientes</h2>
+                    {% if tareas %}
+                        <ul class="list-group">
+                            {% for tarea in tareas %}
+                                <li class="list-group-item">
+                                    {{ tarea.nombre }} - {{ tarea.descripcion }} (Estado: {{ tarea.estado }})
+                                    {% if tarea.ultima_ejecucion %}
+                                        <br><small>Última ejecución: {{ tarea.ultima_ejecucion }}</small>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No hay tareas pendientes.</p>
+                    {% endif %}
+                </div>
+            </section>
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title h5">Notificaciones</h2>
+                    {% if notificaciones %}
+                        <ul class="list-group">
+                            {% for notificacion in notificaciones %}
+                                <li class="list-group-item">{{ notificacion.mensaje }} - {{ notificacion.fecha }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No hay notificaciones nuevas.</p>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

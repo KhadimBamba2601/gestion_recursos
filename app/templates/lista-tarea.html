@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista de Tareas</h1>
+    <a href="{{ url_for('crear_tarea') }}" class="btn btn-primary mb-3">Crear Nueva Tarea</a>
+    {% if tareas.items %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Frecuencia</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                    <th>Última Ejecución</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarea in tareas.items %}
+                    <tr>
+                        <td>{{ tarea.descripcion }}</td>
+                        <td>{{ tarea.frecuencia }}</td>
+                        <td>{{ tarea.hora_ejecucion }}</td>
+                        <td>{{ tarea.estado }}</td>
+                        <td>{{ tarea.ultima_ejecucion or 'N/A' }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_tarea', id=tarea.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                            <form action="{{ url_for('eliminar_tarea', id=tarea.id) }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar esta tarea?');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="Paginación de tareas">
+            <ul class="pagination">
+                {% if tareas.has_prev %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('listar_tareas', page=tareas.prev_num) }}">Anterior</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+                {% for page_num in tareas.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num == tareas.page %}
+                            <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('listar_tareas', page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                {% if tareas.has_next %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('listar_tareas', page=tareas.next_num) }}">Siguiente</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <p>No hay tareas registradas.</p>
+    {% endif %}
+    <a href="{{ url_for('panel_de_control') }}" class="btn btn-secondary">Volver al Panel de Control</a>
+</div>
+{% endblock %}

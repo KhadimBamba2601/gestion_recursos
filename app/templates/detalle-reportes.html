@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de {{ reporte.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Detalle de Informe: {{ reporte.nombre }}</h1>
+
+    <div class="card">
+        <div class="card-header">
+            Información del Informe
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Nombre:</dt>
+                <dd class="col-sm-9">{{ reporte.nombre }}</dd>
+
+                <dt class="col-sm-3">Descripción:</dt>
+                <dd class="col-sm-9">{{ reporte.descripcion }}</dd>
+
+                <dt class="col-sm-3">Fecha de Creación:</dt>
+                <dd class="col-sm-9">{{ reporte.fecha_creacion }}</dd>
+
+                {% if reporte.tipo == 'actividad' %}
+                    <dt class="col-sm-3">Usuario:</dt>
+                    <dd class="col-sm-9">{{ reporte.usuario.username }}</dd>
+                    <dt class="col-sm-3">Actividades:</dt>
+                    <dd class="col-sm-9">
+                        <ul>
+                            {% for actividad in reporte.actividades %}
+                                <li>{{ actividad.descripcion }} - {{ actividad.fecha }}</li>
+                            {% endfor %}
+                        </ul>
+                    </dd>
+                {% elif reporte.tipo == 'recursos' %}
+                    <dt class="col-sm-3">Uso de CPU:</dt>
+                    <dd class="col-sm-9">{{ reporte.cpu_uso }}%</dd>
+                    <dt class="col-sm-3">Uso de Memoria:</dt>
+                    <dd class="col-sm-9">{{ reporte.memoria_uso }}%</dd>
+                    {% endif %}
+            </dl>
+        </div>
+    </div>
+
+    <a href="{{ url_for('reportes.listar_reportes') }}" class="btn btn-secondary mt-3">Volver a la lista de informes</a>
+</div>
+{% endblock %}
